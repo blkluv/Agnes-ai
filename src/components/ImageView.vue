@@ -124,34 +124,20 @@
             ></textarea>
           </div>
 
-          <!-- Parameters grid -->
+          <!-- Parameters -->
+          <div>
+            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">尺寸</label>
+            <select
+              v-model="size"
+              :disabled="loading"
+              class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
+            >
+              <option value="1024x1024">1024 × 1024 (方形)</option>
+              <option value="1024x768">1024 × 768 (横屏)</option>
+              <option value="768x1024">768 × 1024 (竖屏)</option>
+            </select>
+          </div>
           <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">宽度</label>
-              <select
-                v-model.number="width"
-                :disabled="loading"
-                class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
-              >
-                <option :value="512">512</option>
-                <option :value="768">768</option>
-                <option :value="1024">1024</option>
-                <option :value="1536">1536</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">高度</label>
-              <select
-                v-model.number="height"
-                :disabled="loading"
-                class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
-              >
-                <option :value="512">512</option>
-                <option :value="768">768</option>
-                <option :value="1024">1024</option>
-                <option :value="1536">1536</option>
-              </select>
-            </div>
             <div>
               <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">推理步数</label>
               <input
@@ -289,8 +275,7 @@ const mode = ref('text-to-image')
 
 // Params
 const prompt = ref('')
-const width = ref(1024)
-const height = ref(1024)
+const size = ref('1024x1024')
 const numInferenceSteps = ref(50)
 const seed = ref(-1)
 const negativePrompt = ref('')
@@ -379,7 +364,7 @@ async function generateImage() {
       model: 'agnes-image-2.1-flash',
       prompt: prompt.value.trim(),
       n: 1,
-      size: `${width.value}x${height.value}`,
+      size: size.value,
       extra_body: {
         response_format: 'url',
       },
@@ -425,8 +410,7 @@ async function generateImage() {
         prompt: prompt.value.trim(),
         mode: mode.value,
         params: {
-          width: width.value,
-          height: height.value,
+          size: size.value,
           numInferenceSteps: numInferenceSteps.value,
           seed: seed.value,
           negativePrompt: negativePrompt.value,

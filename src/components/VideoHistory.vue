@@ -56,11 +56,9 @@
           <div class="flex items-center space-x-2 ml-3">
             <a
               v-if="video.status === 'completed' && video.url"
-              :href="video.url"
-              download="agnes-generated-video.mp4"
+              :href="video.url"target="_blank" rel="noopener noreferrer"
               class="p-1.5 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 rounded-lg text-gray-700 dark:text-gray-200 transition-colors"
-              title="下载"
-            >
+              title="在新页签打开">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
             </a>
             <button @click="deleteVideo(idx)" class="p-1.5 bg-red-300 dark:bg-red-800 hover:bg-red-400 dark:hover:bg-red-700 rounded-lg text-red-700 dark:text-red-300 transition-colors" title="删除">
@@ -118,9 +116,9 @@
               <a
                 v-if="video.status === 'completed' && video.url"
                 :href="video.url"
-                download="agnes-generated-video.mp4"
+                target="_blank" rel="noopener noreferrer"
                 class="p-1.5 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded-lg text-gray-700 dark:text-gray-200 transition-colors"
-                title="下载"
+                title="在新页签打开"
               >
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
               </a>
