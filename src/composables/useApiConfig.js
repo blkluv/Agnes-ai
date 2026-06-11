@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 
-// In development mode, use Vite proxy to avoid Cloudflare browser-specific connection issues.
-// Ignore saved localStorage baseUrl in dev mode so the proxy always takes effect.
-const defaultBaseUrl = import.meta.env.DEV
-  ? '/api/agnes'
-  : (localStorage.getItem('agnes-base-url') || 'https://apihub.agnes-ai.com')
+// Default to local proxy path (/api/agnes) so requests go through Vite dev server proxy
+// or Vercel rewrites instead of calling the API directly from the browser.
+// This avoids Cloudflare's browser-specific connection issues (ERR_CONNECTION_CLOSED).
+// The user can override via the settings UI (saves to localStorage).
+const defaultBaseUrl = localStorage.getItem('agnes-base-url') || '/api/agnes'
 const baseUrl = ref(defaultBaseUrl)
 const apiKey = ref(localStorage.getItem('agnes-api-key') || '')
 
