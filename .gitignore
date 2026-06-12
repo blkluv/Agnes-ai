@@ -26,6 +26,9 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Cloudflare Workers
+.wrangler/
+
 # 环境变量
 .env
 .env.local
