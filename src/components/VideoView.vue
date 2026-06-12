@@ -167,52 +167,54 @@
           <!-- Parameters grid -->
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">宽度</label>
+              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                尺寸
+                <ParamTip tip="视频画面的分辨率。<br><b>横屏 16:9</b>：1920×1080（1080p）、1280×720（720p）、1152×768（推荐）<br><b>竖屏 9:16</b>：1080×1920、720×1280<br><b>超宽 21:9</b>：2560×1080<br><b>方形</b>：1024×1024<br>推荐：1152×768（横屏性价比最高）。" title="尺寸说明" />
+              </label>
               <select
-                v-model.number="width"
+                v-model="videoSize"
                 :disabled="loading"
                 class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
               >
-                <option :value="720">720</option>
-                <option :value="1080">1080</option>
-                <option :value="1152">1152</option>
-                <option :value="1920">1920</option>
+                <!-- 横屏 16:9 -->
+                <option value="1920x1080">1920 × 1080 (16:9 1080p)</option>
+                <option value="1280x720">1280 × 720 (16:9 720p)</option>
+                <option value="1152x768">1152 × 768 (推荐)</option>
+                <option value="960x540">960 × 540 (16:9)</option>
+                <option value="640x360">640 × 360 (16:9)</option>
+                <!-- 竖屏 9:16 -->
+                <option value="1080x1920">1080 × 1920 (9:16 竖屏)</option>
+                <option value="720x1280">720 × 1280 (9:16 竖屏)</option>
+                <option value="576x1024">576 × 1024 (9:16 竖屏)</option>
+                <!-- 超宽 21:9 -->
+                <option value="2560x1080">2560 × 1080 (21:9 超宽)</option>
+                <option value="1920x810">1920 × 810 (21:9)</option>
+                <!-- 方形 -->
+                <option value="1024x1024">1024 × 1024 (1:1 方形)</option>
               </select>
             </div>
             <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">高度</label>
-              <select
-                v-model.number="height"
-                :disabled="loading"
-                class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
-              >
-                <option :value="720">720</option>
-                <option :value="768">768</option>
-                <option :value="1080">1080</option>
-                <option :value="1920">1920</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">总帧数</label>
+              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+              总帧数
+              <ParamTip tip="视频的总帧数，必须满足 8n+1 且 ≤ 441。视频时长 = num_frames ÷ frame_rate。81 (~3s) 最快，适合快速预览；121 (~5s) 默认推荐；161 (~7s)；241 (~10s)；441 (~18s) 最长生成最慢。帧数越多生成时间越长。" title="总帧数说明" />
+            </label>
               <select
                 v-model.number="numFrames"
                 :disabled="loading"
                 class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
               >
-                <option :value="81">81</option>
-                <option :value="121">121</option>
-                <option :value="161">161</option>
-                <option :value="201">201</option>
-                <option :value="241">241</option>
-                <option :value="281">281</option>
-                <option :value="321">321</option>
-                <option :value="361">361</option>
-                <option :value="401">401</option>
-                <option :value="441">441</option>
+                <option :value="81">81 (~3s)</option>
+                <option :value="121">121 (~5s)</option>
+                <option :value="161">161 (~7s)</option>
+                <option :value="241">241 (~10s)</option>
+                <option :value="441">441 (~18s)</option>
               </select>
             </div>
             <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">帧率 (FPS)</label>
+              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+              帧率 (FPS)
+              <ParamTip tip="每秒播放的帧数，影响视频流畅度和时长。范围 1-60。推荐 24 — 电影感最稳定；30 更流畅；60 极流畅但生成时间翻倍。时长 = num_frames ÷ frame_rate。例如 121 帧 / 24 FPS ≈ 5 秒。" title="帧率说明" />
+            </label>
               <select
                 v-model.number="frameRate"
                 :disabled="loading"
@@ -226,7 +228,10 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">随机种子</label>
+              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                随机种子
+                <ParamTip tip="控制视频生成的随机性。-1 为随机种子（每次生成不同结果），固定数字则相同 prompt + 相同 seed = 相同结果，可用于复现满意的生成效果。" title="随机种子说明" />
+              </label>
               <input
                 v-model.number="seed"
                 type="number"
@@ -239,7 +244,10 @@
 
           <!-- Negative prompt -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">负面提示词 (Negative Prompt)</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              负面提示词 (Negative Prompt)
+              <ParamTip tip="描述你不希望出现在视频中的内容，例如：blurry, low quality, distorted, watermark, text, logo 等。使用英文效果更佳。留空则不启用。" title="负面提示词说明" />
+            </label>
             <input
               v-model="negativePrompt"
               placeholder="不想出现在视频中的内容..."
@@ -326,10 +334,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useApiConfig } from '../composables/useApiConfig'
 import VideoHistory from './VideoHistory.vue'
 import LoadingSpinner from './LoadingSpinner.vue'
+import ParamTip from './ParamTip.vue'
 
 const { isConfigured, formatUrl, getHeaders, baseUrl } = useApiConfig()
 
@@ -355,12 +364,20 @@ const keyframes = ref([])
 
 // Prompt
 const prompt = ref('')
+const videoSize = ref('1152x768') // 统一尺寸格式，默认推荐
 const width = ref(1152)
 const height = ref(768)
 const seed = ref(-1)
 const negativePrompt = ref('')
-const numFrames = ref(441)
+const numFrames = ref(121)
 const frameRate = ref(24)
+
+// 监听 videoSize 变化，自动更新 width 和 height
+watch(videoSize, (newSize) => {
+  const [w, h] = newSize.split('x').map(Number)
+  width.value = w
+  height.value = h
+})
 
 // State
 const loading = ref(false)
@@ -375,7 +392,7 @@ const videoHistoryRef = ref(null)
 // Computed
 const promptPlaceholder = computed(() => {
   switch (videoMode.value) {
-    case 'txt2vid': return '描述你想要生成的视频内容...'
+    case 'ti2vid': return '描述你想要生成的视频内容...'
     case 'img2vid': return '描述图片中的人物/场景如何运动...'
     case 'multi-img': return '描述图片序列的连贯动画...'
     case 'keyframes': return '描述关键帧之间的动画过渡...'
@@ -385,7 +402,7 @@ const promptPlaceholder = computed(() => {
 
 const modeLabel = computed(() => {
   switch (videoMode.value) {
-    case 'txt2vid': return '视频'
+    case 'ti2vid': return '视频'
     case 'img2vid': return '图生视频'
     case 'multi-img': return '多图视频'
     case 'keyframes': return '关键帧动画'
@@ -395,7 +412,7 @@ const modeLabel = computed(() => {
 
 const generateButtonText = computed(() => {
   switch (videoMode.value) {
-    case 'txt2vid': return '生成视频'
+    case 'ti2vid': return '生成视频'
     case 'img2vid': return '生成图生视频'
     case 'multi-img': return '生成多图视频'
     case 'keyframes': return '生成关键帧动画'
@@ -471,9 +488,11 @@ async function generateVideo() {
 
   switch (videoMode.value) {
     case 'img2vid':
+      // image 参数必须在 extra_body 中
       extraBody.image = sourceImages.value[0]
       break
     case 'multi-img':
+      // images 数组必须在 extra_body 中
       extraBody.images = [...multiImages.value]
       break
     case 'keyframes':
@@ -493,8 +512,13 @@ async function generateVideo() {
     frame_rate: frameRate.value,
     seed: seed.value >= 0 ? seed.value : undefined,
     negative_prompt: negativePrompt.value.trim() || undefined,
-    extra_body: extraBody,
+    extra_body: {
+      ...extraBody,
+      response_format: 'url',
+    },
   }
+
+  let videoId = ''
 
   try {
     // Step 1: Create video task
@@ -514,7 +538,7 @@ async function generateVideo() {
     console.log('Video creation response:', data)
 
     // Use video_id as primary identifier (more stable for status polling)
-    const videoId = data.video_id || data.id || data.task_id
+    videoId = data.video_id || data.id || data.task_id
     if (!videoId) {
       throw new Error('API 返回中未找到视频 ID')
     }
@@ -553,11 +577,18 @@ function stopGeneration() {
     abortController.value.abort()
     abortController.value = null
   }
+  // Clean up the pending history entry if still pending
+  if (currentTaskId.value) {
+    videoHistoryRef.value?.updateVideo(currentTaskId.value, { status: 'cancelled' })
+  }
 }
 
 async function startPolling(videoId, signal) {
   const pollInterval = 5000
-  const maxAttempts = 72
+  const requestTimeout = 30000 // 单次请求超时 30 秒
+  const maxAttempts = 120 // 最多轮询 120 次 = 10 分钟
+  let consecutiveErrors = 0
+  let consecutiveEmpty = 0 // 连续空响应计数
 
   for (let i = 0; i < maxAttempts; i++) {
     if (cancelled.value) {
@@ -566,6 +597,7 @@ async function startPolling(videoId, signal) {
       return
     }
 
+    // 等待轮询间隔
     await new Promise(resolve => setTimeout(resolve, pollInterval))
 
     if (cancelled.value) {
@@ -575,18 +607,64 @@ async function startPolling(videoId, signal) {
     }
 
     try {
+      // 使用 AbortController 控制请求超时
+      const timeoutController = new AbortController()
+      const timeoutId = setTimeout(() => timeoutController.abort(), requestTimeout)
+
       const statusUrl = `${baseUrl.value.replace(/\/+$/, '')}/agnesapi?video_id=${videoId}`
       const statusResponse = await fetch(statusUrl, {
         method: 'GET',
         headers: getHeaders(),
-        signal,
+        signal: AbortSignal.any([signal, timeoutController.signal]),
       })
 
+      clearTimeout(timeoutId)
+
+      // 处理 503 排队：指数退避重试
+      if (!statusResponse.ok && statusResponse.status === 503) {
+        consecutiveErrors++
+        if (consecutiveErrors <= 5) {
+          const backoffMs = Math.min(1000 * Math.pow(2, consecutiveErrors), 30000)
+          progress.value = 0
+          await new Promise(resolve => setTimeout(resolve, backoffMs))
+          if (cancelled.value) {
+            videoHistoryRef.value?.updateVideo(videoId, { status: 'cancelled' })
+            loading.value = false
+            return
+          }
+          i-- // 不消耗轮询次数
+          continue
+        } else {
+          throw new Error(`视频生成服务繁忙（503），已等待多次仍无响应。免费 API 高峰期排队较长，请稍后在历史记录中刷新查看。`)
+        }
+      }
+
+      // 其他 HTTP 错误：非 503 的错误也做退避重试
       if (!statusResponse.ok) {
+        consecutiveErrors++
+        if (consecutiveErrors <= 3) {
+          const backoffMs = Math.min(1000 * Math.pow(2, consecutiveErrors), 15000)
+          await new Promise(resolve => setTimeout(resolve, backoffMs))
+          i-- // 不消耗轮询次数
+          continue
+        }
         throw new Error(`状态查询失败: ${statusResponse.status}`)
       }
 
+      consecutiveErrors = 0 // 重置错误计数
       const statusData = await statusResponse.json()
+
+      // 检查空响应或无效响应
+      if (!statusData || Object.keys(statusData).length === 0) {
+        consecutiveEmpty++
+        if (consecutiveEmpty >= 3) {
+          // 连续 3 次空响应，可能是服务问题，提示用户
+          error.value = `查询结果为空，请检查网络或稍后重试 (${i + 1}/${maxAttempts})`
+        }
+        continue
+      }
+      consecutiveEmpty = 0
+
       console.log('Polling response:', statusData)
 
       const status = statusData.status?.toLowerCase() || ''
@@ -608,14 +686,31 @@ async function startPolling(videoId, signal) {
           loading.value = false
           return
         } else {
+          // 有状态但没有 URL，继续轮询
           continue
         }
       } else if (status === 'failed' || status === 'error') {
         const errMsg = statusData.error || statusData.message || '视频生成失败'
         throw new Error(errMsg)
       }
+      // 其他状态（queued, in_progress 等）继续轮询
     } catch (err) {
-      if (err.name === 'AbortError' || cancelled.value) {
+      if (err.name === 'AbortError') {
+        // 请求超时
+        consecutiveErrors++
+        if (consecutiveErrors <= 3) {
+          i-- // 不消耗轮询次数
+          continue
+        }
+        error.value = '网络请求超时，请检查网络连接'
+        videoHistoryRef.value?.updateVideo(videoId, {
+          status: 'failed',
+          error: '网络请求超时',
+        })
+        loading.value = false
+        return
+      }
+      if (cancelled.value) {
         videoHistoryRef.value?.updateVideo(videoId, { status: 'cancelled' })
         loading.value = false
         return
@@ -630,7 +725,8 @@ async function startPolling(videoId, signal) {
     }
   }
 
-  error.value = '视频生成超时，请稍后刷新页面检查状态'
+  // 超时后不清除任务，让用户可以在历史记录中刷新查看
+  error.value = `视频生成已超时（${maxAttempts * pollInterval / 1000 / 60}分钟），请稍后在历史记录中刷新查看状态`
   videoHistoryRef.value?.updateVideo(videoId, {
     status: 'timeout',
   })

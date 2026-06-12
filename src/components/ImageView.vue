@@ -126,20 +126,38 @@
 
           <!-- Parameters -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">尺寸</label>
+            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+              尺寸
+              <ParamTip tip="图片输出的像素尺寸。支持多种常用尺寸：<br><b>方形</b>：1024×1024、512×512<br><b>横屏 16:9</b>：1920×1080、1280×720、1024×576<br><b>竖屏 9:16</b>：1080×1920、720×1280<br><b>横屏 4:3</b>：1600×1200、1024×768<br><b>超宽屏 21:9</b>：2560×1080<br>推荐：1024×1024（通用）、1920×1080（高清横屏）、1080×1920（竖屏）" title="尺寸说明" />
+            </label>
             <select
               v-model="size"
               :disabled="loading"
               class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
             >
-              <option value="1024x1024">1024 × 1024 (方形)</option>
-              <option value="1024x768">1024 × 768 (横屏)</option>
-              <option value="768x1024">768 × 1024 (竖屏)</option>
+              <!-- 方形 -->
+              <option value="1024x1024">1024 × 1024 (1:1 方形)</option>
+              <option value="512x512">512 × 512 (1:1 小图)</option>
+              <!-- 横屏 16:9 -->
+              <option value="1920x1080">1920 × 1080 (16:9 全高清)</option>
+              <option value="1280x720">1280 × 720 (16:9 HD)</option>
+              <option value="1024x576">1024 × 576 (16:9)</option>
+              <!-- 竖屏 9:16 -->
+              <option value="1080x1920">1080 × 1920 (9:16 竖屏)</option>
+              <option value="720x1280">720 × 1280 (9:16 竖屏)</option>
+              <!-- 横屏 4:3 -->
+              <option value="1600x1200">1600 × 1200 (4:3 横屏)</option>
+              <option value="1024x768">1024 × 768 (4:3 横屏)</option>
+              <!-- 超宽屏 21:9 -->
+              <option value="2560x1080">2560 × 1080 (21:9 超宽)</option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">推理步数</label>
+              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                推理步数
+                <ParamTip tip="控制图像生成的迭代次数。<br>• 范围：1 - 100<br>• 默认：50<br>• 步数越多，图像细节可能越丰富，但生成时间也会更长。一般 30-50 即可满足需求。" title="推理步数说明" />
+              </label>
               <input
                 v-model.number="numInferenceSteps"
                 type="number"
@@ -150,7 +168,10 @@
               />
             </div>
             <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">随机种子</label>
+              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                随机种子
+                <ParamTip tip="控制生成结果的随机性。<br>• -1：随机种子（每次生成不同结果）<br>• 固定数字：相同 prompt + 相同 seed = 相同结果<br>可用于复现满意的生成效果。" title="随机种子说明" />
+              </label>
               <input
                 v-model.number="seed"
                 type="number"
@@ -163,7 +184,10 @@
 
           <!-- Negative prompt -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">负面提示词 (Negative Prompt)</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              负面提示词 (Negative Prompt)
+              <ParamTip tip="描述你不希望出现在图片中的内容，例如：blurry, low quality, distorted, watermark, extra fingers 等。使用英文效果更佳。留空则不启用。" title="负面提示词说明" />
+            </label>
             <input
               v-model="negativePrompt"
               placeholder="不想出现在图片中的内容..."
@@ -267,6 +291,7 @@ import { ref, onMounted } from 'vue'
 import { useApiConfig } from '../composables/useApiConfig'
 import ImageHistory from './ImageHistory.vue'
 import LoadingSpinner from './LoadingSpinner.vue'
+import ParamTip from './ParamTip.vue'
 
 const { isConfigured, formatUrl, getHeaders } = useApiConfig()
 
@@ -380,9 +405,9 @@ async function generateImage() {
     if (negativePrompt.value.trim()) {
       body.extra_body.negative_prompt = negativePrompt.value.trim()
     }
-    // For image-to-image, add the source image inside extra_body (per Agnes API spec)
+    // For image-to-image, add the source image inside extra_body as array (per Agnes API spec)
     if (mode.value === 'image-to-image' && sourceImage.value) {
-      body.extra_body.image = sourceImage.value
+      body.extra_body.image = [sourceImage.value]
     }
 
     // Create AbortController for cancellation

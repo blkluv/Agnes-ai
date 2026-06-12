@@ -61,7 +61,13 @@ const localApiKey = ref(apiKey.value)
 const showKey = ref(false)
 
 function handleSave() {
-  saveConfig(localBaseUrl.value, localApiKey.value)
+  const url = localBaseUrl.value.trim()
+  const key = localApiKey.value.trim()
+  if (!key) {
+    alert('API Key 不能为空')
+    return
+  }
+  saveConfig(url, key)
   alert('配置已保存！')
 }
 </script>
