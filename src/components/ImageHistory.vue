@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-850">
+    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/60">
       <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
         历史记录
         <span class="text-xs font-normal text-gray-400 dark:text-gray-500 ml-1">({{ images.length }})</span>
@@ -115,12 +115,30 @@
         </div>
       </div>
     </Modal>
+
+    <!-- Confirm dialogs -->
+    <ConfirmDialog
+      :visible="confirmDelete.show"
+      title="确认删除"
+      message="确定要删除这张图片吗？此操作不可撤销。"
+      @confirm="confirmDeleteImage"
+      @cancel="cancelDeleteImage"
+    />
+    <ConfirmDialog
+      :visible="confirmClearAll"
+      title="清空全部"
+      message="确定要清空所有图片记录吗？此操作不可撤销。"
+      confirm-text="清空全部"
+      @confirm="confirmClearAllImages"
+      @cancel="cancelClearAllImages"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import Modal from './Modal.vue'
+import ConfirmDialog from './ConfirmDialog.vue'
 
 const props = defineProps({
   images: { type: Array, default: () => [] },
@@ -132,6 +150,10 @@ const emit = defineEmits(['edit-image', 'delete-image', 'clear-all'])
 const showModal = ref(false)
 const previewUrl = ref('')
 
+// Confirm dialog state
+const confirmDelete = ref({ show: false, idx: null })
+const confirmClearAll = ref(false)
+
 const displayedImages = computed(() => {
   return props.images.slice(0, props.maxDisplay)
 })
@@ -141,14 +163,32 @@ function openImage(url) {
 }
 
 function deleteImage(idx) {
-  emit('delete-image', idx)
+  confirmDelete.value = { show: true, idx }
+}
+
+function confirmDeleteImage() {
+  if (confirmDelete.value.idx !== null) {
+    emit('delete-image', confirmDelete.value.idx)
+  }
+  confirmDelete.value = { show: false, idx: null }
+}
+
+function cancelDeleteImage() {
+  confirmDelete.value = { show: false, idx: null }
 }
 
 function clearAll() {
-  if (confirm('确定要清空所有图片记录吗？')) {
-    emit('clear-all')
-    showModal.value = false
-  }
+  confirmClearAll.value = true
+}
+
+function confirmClearAllImages() {
+  emit('clear-all')
+  confirmClearAll.value = false
+  showModal.value = false
+}
+
+function cancelClearAllImages() {
+  confirmClearAll.value = false
 }
 
 function formatDate(ts) {

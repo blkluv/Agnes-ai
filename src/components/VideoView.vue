@@ -1,13 +1,22 @@
 <template>
-  <div class="flex space-x-4">
+  <div class="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0">
     <!-- Left: Generation panel -->
-    <div class="flex-1 min-w-0 space-y-4">
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
+    <div class="flex-1 space-y-4">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-5">
         <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
           <svg class="w-4 h-4 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
-          AI 视频生成
+          <span class="flex-1">AI 视频生成</span>
+          <button
+            @click="showHistory = !showHistory"
+            class="md:hidden p-1.5 rounded-lg text-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors"
+            title="历史记录"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
         </h3>
 
         <div class="space-y-4">
@@ -288,7 +297,7 @@
       </div>
 
       <!-- Current result -->
-      <div v-if="currentVideoUrl" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
+      <div v-if="currentVideoUrl" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-5">
         <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center justify-between">
           <span>生成结果</span>
           <a
@@ -326,8 +335,13 @@
       </div>
     </div>
 
-    <!-- Right: History panel -->
-    <div class="w-72 flex-shrink-0">
+    <!-- Mobile: History panel -->
+    <Modal :visible="showHistory" title="视频历史记录" @close="showHistory = false">
+      <VideoHistory ref="videoHistoryRef" />
+    </Modal>
+
+    <!-- Desktop: History panel (hidden on mobile) -->
+    <div class="hidden md:block w-72 flex-shrink-0">
       <VideoHistory ref="videoHistoryRef" />
     </div>
   </div>
@@ -339,6 +353,7 @@ import { useApiConfig } from '../composables/useApiConfig'
 import VideoHistory from './VideoHistory.vue'
 import LoadingSpinner from './LoadingSpinner.vue'
 import ParamTip from './ParamTip.vue'
+import Modal from './Modal.vue'
 
 const { isConfigured, formatUrl, getHeaders, baseUrl } = useApiConfig()
 
@@ -388,6 +403,7 @@ const currentVideoUrl = ref('')
 const currentTaskId = ref('')
 const error = ref('')
 const videoHistoryRef = ref(null)
+const showHistory = ref(false)
 
 // Computed
 const promptPlaceholder = computed(() => {

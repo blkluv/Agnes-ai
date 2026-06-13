@@ -155,12 +155,30 @@
         </div>
       </div>
     </Modal>
+
+    <!-- Confirm dialogs -->
+    <ConfirmDialog
+      :visible="confirmDelete.show"
+      title="确认删除"
+      message="确定要删除这条视频记录吗？此操作不可撤销。"
+      @confirm="confirmDeleteVideo"
+      @cancel="cancelDelete"
+    />
+    <ConfirmDialog
+      :visible="confirmClearAll"
+      title="清空全部"
+      message="确定要清空所有视频记录吗？此操作不可撤销。"
+      confirm-text="清空全部"
+      @confirm="confirmClearAllVideos"
+      @cancel="cancelClearAll"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import Modal from './Modal.vue'
+import ConfirmDialog from './ConfirmDialog.vue'
 import { useApiConfig } from '../composables/useApiConfig'
 
 const { isConfigured, baseUrl, getHeaders } = useApiConfig()
@@ -170,6 +188,10 @@ const STORAGE_KEY = 'agnes-videos'
 const videos = ref([])
 const showModal = ref(false)
 const refreshingId = ref(null) // 正在刷新的任务 ID
+
+// Confirm dialog state
+const confirmDelete = ref({ show: false, idx: null })
+const confirmClearAll = ref(false)
 
 const displayedVideos = computed(() => {
   return videos.value.slice(0, 3)
@@ -200,14 +222,32 @@ function updateVideo(taskId, updates) {
 }
 
 function deleteVideo(idx) {
-  videos.value.splice(idx, 1)
+  confirmDelete.value = { show: true, idx }
+}
+
+function confirmDeleteVideo() {
+  if (confirmDelete.value.idx !== null) {
+    videos.value.splice(confirmDelete.value.idx, 1)
+  }
+  confirmDelete.value = { show: false, idx: null }
+}
+
+function cancelDelete() {
+  confirmDelete.value = { show: false, idx: null }
 }
 
 function clearAll() {
-  if (confirm('确定要清空所有视频记录吗？')) {
-    videos.value = []
-    showModal.value = false
-  }
+  confirmClearAll.value = true
+}
+
+function confirmClearAllVideos() {
+  videos.value = []
+  confirmClearAll.value = false
+  showModal.value = false
+}
+
+function cancelClearAll() {
+  confirmClearAll.value = false
 }
 
 function formatDate(ts) {

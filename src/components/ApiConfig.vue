@@ -54,6 +54,8 @@
 import { ref } from 'vue'
 import { useApiConfig } from '../composables/useApiConfig'
 
+const emit = defineEmits(['saved'])
+
 const { baseUrl, apiKey, saveConfig } = useApiConfig()
 
 const localBaseUrl = ref(baseUrl.value)
@@ -68,6 +70,6 @@ function handleSave() {
     return
   }
   saveConfig(url, key)
-  alert('配置已保存！')
+  emit('saved')
 }
 </script>
