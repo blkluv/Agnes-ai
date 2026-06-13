@@ -16,6 +16,7 @@ if (storedUrl && (storedUrl.includes('apihub.agnes-ai.com') || storedUrl.include
 const defaultBaseUrl = storedUrl || '/api/agnes'
 const baseUrl = ref(defaultBaseUrl)
 const apiKey = ref(localStorage.getItem('agnes-api-key') || '')
+const isConfigured = ref(!!apiKey.value)
 
 export function useApiConfig() {
   function saveConfig(url, key) {
@@ -37,8 +38,6 @@ export function useApiConfig() {
     const base = baseUrl.value.replace(/\/+$/, '')
     return `${base}${path}`
   }
-
-  const isConfigured = ref(!!apiKey.value)
 
   return {
     baseUrl,
