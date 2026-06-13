@@ -236,19 +236,6 @@
                 <option :value="60">60</option>
               </select>
             </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                随机种子
-                <ParamTip tip="控制视频生成的随机性。-1 为随机种子（每次生成不同结果），固定数字则相同 prompt + 相同 seed = 相同结果，可用于复现满意的生成效果。" title="随机种子说明" />
-              </label>
-              <input
-                v-model.number="seed"
-                type="number"
-                placeholder="-1 (随机)"
-                :disabled="loading"
-                class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
-              />
-            </div>
           </div>
 
           <!-- Negative prompt -->
@@ -382,7 +369,6 @@ const prompt = ref('')
 const videoSize = ref('1152x768') // 统一尺寸格式，默认推荐
 const width = ref(1152)
 const height = ref(768)
-const seed = ref(-1)
 const negativePrompt = ref('')
 const numFrames = ref(121)
 const frameRate = ref(24)
@@ -498,27 +484,6 @@ async function generateVideo() {
   const signal = abortController.value.signal
 
   // Build request body
-  const extraBody = {
-    mode: apiMode.value,
-  }
-
-  switch (videoMode.value) {
-    case 'img2vid':
-      // image 参数必须在 extra_body 中
-      extraBody.image = sourceImages.value[0]
-      break
-    case 'multi-img':
-      // images 数组必须在 extra_body 中
-      extraBody.images = [...multiImages.value]
-      break
-    case 'keyframes':
-      extraBody.keyframes = keyframes.value.map(kf => ({
-        frame_index: kf.frame_index,
-        image: kf.image,
-      }))
-      break
-  }
-
   const requestBody = {
     model: 'agnes-video-v2.0',
     prompt: prompt.value.trim(),
@@ -526,12 +491,32 @@ async function generateVideo() {
     height: height.value,
     num_frames: numFrames.value,
     frame_rate: frameRate.value,
-    seed: seed.value >= 0 ? seed.value : undefined,
     negative_prompt: negativePrompt.value.trim() || undefined,
-    extra_body: {
-      ...extraBody,
-      response_format: 'url',
-    },
+    mode: apiMode.value,
+  }
+
+  // Add mode-specific fields
+  switch (videoMode.value) {
+    case 'img2vid':
+      requestBody.image = sourceImages.value[0]
+      break
+    case 'multi-img':
+      requestBody.images = [...multiImages.value]
+      requestBody.extra_body = {
+        mode: 'keyframes',
+        images: [...multiImages.value],
+      }
+      break
+    case 'keyframes':
+      requestBody.mode = 'keyframes'
+      requestBody.extra_body = {
+        mode: 'keyframes',
+        keyframes: keyframes.value.map(kf => ({
+          frame_index: kf.frame_index,
+          image: kf.image,
+        })),
+      }
+      break
   }
 
   let videoId = ''

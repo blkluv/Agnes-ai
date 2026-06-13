@@ -81,14 +81,13 @@
                 </div>
               </div>
               <!-- Current source URL display -->
-              <div v-if="sourceImage" class="flex items-center space-x-1 px-2 py-1.5 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-                <span class="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">URL:</span>
+              <div v-if="sourceImage" class="flex items-start space-x-1 px-2 py-1.5 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+                <span class="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0 leading-4">URL:</span>
                 <a
                   :href="sourceImage"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex-1 text-xs text-indigo-600 dark:text-indigo-400 truncate hover:underline min-w-0"
-                  :title="sourceImage"
+                  class="flex-1 text-xs text-indigo-600 dark:text-indigo-400 break-all hover:underline min-w-0 leading-4"
                 >{{ sourceImage }}</a>
                 <button
                   @click="copySourceUrl"
@@ -162,36 +161,6 @@
               <option value="2560x1080">2560 × 1080 (21:9 超宽)</option>
             </select>
           </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                推理步数
-                <ParamTip tip="控制图像生成的迭代次数。<br>• 范围：1 - 100<br>• 默认：50<br>• 步数越多，图像细节可能越丰富，但生成时间也会更长。一般 30-50 即可满足需求。" title="推理步数说明" />
-              </label>
-              <input
-                v-model.number="numInferenceSteps"
-                type="number"
-                min="1"
-                max="100"
-                :disabled="loading"
-                class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
-              />
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                随机种子
-                <ParamTip tip="控制生成结果的随机性。<br>• -1：随机种子（每次生成不同结果）<br>• 固定数字：相同 prompt + 相同 seed = 相同结果<br>可用于复现满意的生成效果。" title="随机种子说明" />
-              </label>
-              <input
-                v-model.number="seed"
-                type="number"
-                placeholder="-1 (随机)"
-                :disabled="loading"
-                class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
-              />
-            </div>
-          </div>
-
           <!-- Negative prompt -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -321,9 +290,7 @@ const mode = ref('text-to-image')
 
 // Params
 const prompt = ref('')
-const size = ref('1024x1024')
-const numInferenceSteps = ref(50)
-const seed = ref(-1)
+const size = ref('1024x768')
 const negativePrompt = ref('')
 const sourceImage = ref('')
 const sourceImageInput = ref('')
@@ -371,9 +338,29 @@ function copySourceUrl() {
   })
 }
 
-function handleEditImage(img) {
-  sourceImage.value = img.url
+async function handleEditImage(img) {
   mode.value = 'image-to-image'
+  sourceImage.value = img.url
+  // API 生成的图片 URL 是临时的，过一段时间会过期。
+  // 尝试转成 base64 Data URI（永久有效），供图生图接口使用。
+  fetchImageAsDataURL(img.url).then(dataUrl => {
+    if (dataUrl) sourceImage.value = dataUrl
+  })
+}
+
+async function fetchImageAsDataURL(url) {
+  try {
+    const resp = await fetch(url)
+    const blob = await resp.blob()
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = () => reject(new Error('Convert failed'))
+      reader.readAsDataURL(blob)
+    })
+  } catch {
+    return null
+  }
 }
 
 function handleDeleteImage(idx) {
@@ -417,13 +404,6 @@ async function generateImage() {
       },
     }
 
-    // Add optional params when set
-    if (numInferenceSteps.value > 0) {
-      body.extra_body.num_inference_steps = numInferenceSteps.value
-    }
-    if (seed.value >= 0) {
-      body.extra_body.seed = seed.value
-    }
     if (negativePrompt.value.trim()) {
       body.extra_body.negative_prompt = negativePrompt.value.trim()
     }
@@ -458,8 +438,6 @@ async function generateImage() {
         mode: mode.value,
         params: {
           size: size.value,
-          numInferenceSteps: numInferenceSteps.value,
-          seed: seed.value,
           negativePrompt: negativePrompt.value,
           sourceImage: sourceImage.value || '',
         },
