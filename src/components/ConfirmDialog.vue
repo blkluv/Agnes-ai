@@ -53,10 +53,10 @@
 <script setup>
 defineProps({
   visible: { type: Boolean, default: false },
-  title: { type: String, default: '确认删除' },
-  message: { type: String, default: '确定要删除此项吗？此操作不可撤销。' },
-  confirmText: { type: String, default: '删除' },
-  cancelText: { type: String, default: '取消' },
+  title: { type: String, default: 'Confirm Delete' },
+  message: { type: String, default: 'Are you sure you want to delete this item? This action cannot be undone.' },
+  confirmText: { type: String, default: 'Delete' },
+  cancelText: { type: String, default: 'Cancel' },
 })
 
 defineEmits(['confirm', 'cancel'])
