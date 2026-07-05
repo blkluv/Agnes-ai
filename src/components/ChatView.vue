@@ -22,14 +22,14 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
-          <span>新对话</span>
+          <span>New Chat</span>
         </button>
       </div>
 
       <!-- Conversation list -->
       <div class="flex-1 overflow-y-auto p-2 space-y-1">
         <div v-if="conversations.length === 0" class="text-center py-8 text-gray-400 dark:text-gray-500 text-sm">
-          暂无对话
+          No conversations yet
         </div>
         <div
           v-for="(conv, idx) in conversations"
@@ -46,13 +46,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
           </svg>
           <div class="flex-1 min-w-0">
-            <p class="truncate font-medium">{{ conv.title || '新对话' }}</p>
+            <p class="truncate font-medium">{{ conv.title || 'New Conversation' }}</p>
             <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{{ formatDate(conv.updatedAt) }}</p>
           </div>
           <button
             @click.stop="confirmDeleteConversation(idx)"
             class="flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
-            title="删除对话"
+            title="Delete conversation"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -63,7 +63,7 @@
     </aside>
 
     <!-- Mobile: Conversation list modal -->
-    <Modal :visible="showSidebar" title="对话列表" @close="showSidebar = false">
+    <Modal :visible="showSidebar" title="Conversations" @close="showSidebar = false">
       <div class="space-y-1">
         <button
           @click="newConversation(); showSidebar = false"
@@ -72,10 +72,10 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
-          <span>新对话</span>
+          <span>New Chat</span>
         </button>
         <div v-if="conversations.length === 0" class="text-center py-8 text-gray-400 dark:text-gray-500 text-sm">
-          暂无对话
+          No conversations yet
         </div>
         <div
           v-for="(conv, idx) in conversations"
@@ -92,13 +92,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
           </svg>
           <div class="flex-1 min-w-0">
-            <p class="truncate font-medium">{{ conv.title || '新对话' }}</p>
+            <p class="truncate font-medium">{{ conv.title || 'New Conversation' }}</p>
             <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{{ formatDate(conv.updatedAt) }}</p>
           </div>
           <button
             @click.stop="confirmDeleteConversation(idx)"
             class="flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
-            title="删除对话"
+            title="Delete conversation"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -111,8 +111,8 @@
     <!-- Delete confirmation dialog -->
     <ConfirmDialog
       :visible="confirmDelete.show"
-      title="确认删除"
-      message="确定要删除这个对话吗？此操作不可撤销。"
+      title="Confirm Delete"
+      message="Are you sure you want to delete this conversation? This action cannot be undone."
       @confirm="deleteConfirmed"
       @cancel="cancelDeleteConv"
     />
@@ -131,9 +131,9 @@
         </button>
         <div class="flex-1 min-w-0">
           <h3 class="text-sm font-semibold text-gray-900 dark:text-white truncate">
-            {{ currentConversation?.title || 'AI 对话' }}
+            {{ currentConversation?.title || 'AI Chat' }}
           </h3>
-          <p class="text-xs text-gray-400 dark:text-gray-500">{{ currentMessages.length }} 条消息</p>
+          <p class="text-xs text-gray-400 dark:text-gray-500">{{ currentMessages.length }} messages</p>
         </div>
       </header>
 
@@ -146,8 +146,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           </div>
-          <p class="text-lg font-medium text-gray-600 dark:text-gray-300">开始一段新对话</p>
-          <p class="text-sm mt-1">在下方输入您的消息</p>
+          <p class="text-lg font-medium text-gray-600 dark:text-gray-300">Start a new conversation</p>
+          <p class="text-sm mt-1">Type your message below</p>
         </div>
 
         <!-- Messages -->
@@ -187,7 +187,7 @@
             v-model="userInput"
             @keydown.enter.exact="handleEnter"
             @input="autoResize"
-            placeholder="输入消息..."
+            placeholder="Type a message..."
             :disabled="loading || !isConfigured"
             rows="1"
             class="flex-1 resize-none px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm leading-relaxed max-h-32 overflow-y-auto"
@@ -206,7 +206,7 @@
             v-else
             @click="stopGeneration"
             class="flex-shrink-0 p-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-colors duration-200"
-            title="停止生成"
+            title="Stop generating"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -214,7 +214,7 @@
           </button>
         </div>
         <p v-if="!isConfigured" class="mt-2 text-xs text-amber-500 dark:text-amber-400 text-center">
-          请先在 API 配置中设置 API Key
+          Please set your API Key in the API configuration
         </p>
       </div>
     </main>
@@ -262,7 +262,7 @@ const renderer = {
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
-          <span>复制</span>
+          <span>Copy</span>
         </button>
       </div>
       <pre class="!m-0 !bg-gray-50 dark:!bg-gray-800 !rounded-none border-0"><code class="language-${escapeHtml(lang || '')} text-sm">${encoded}</code></pre>
@@ -282,11 +282,11 @@ const formatDate = (date) => {
   const d = new Date(date)
   const now = new Date()
   const diff = now - d
-  if (diff < 60000) return '刚刚'
-  if (diff < 3600000) return `${Math.floor(diff / 60000)} 分钟前`
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)} 小时前`
-  if (diff < 604800000) return `${Math.floor(diff / 86400000)} 天前`
-  return d.toLocaleDateString('zh-CN')
+  if (diff < 60000) return 'Just now'
+  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`
+  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`
+  if (diff < 604800000) return `${Math.floor(diff / 86400000)}d ago`
+  return d.toLocaleDateString('en-US')
 }
 
 const renderMarkdown = (content) => {
@@ -345,7 +345,7 @@ const saveConversations = () => {
 const newConversation = () => {
   const conv = {
     id: Date.now().toString(),
-    title: '新对话',
+    title: 'New Conversation',
     messages: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
@@ -393,7 +393,7 @@ const handleMessagesClick = (e) => {
       navigator.clipboard.writeText(code).then(() => {
         const span = btn.querySelector('span')
         const originalText = span.textContent
-        span.textContent = '已复制'
+        span.textContent = 'Copied!'
         setTimeout(() => { span.textContent = originalText }, 2000)
       })
     }
@@ -409,7 +409,7 @@ const sendMessage = async () => {
   }
 
   const conv = currentConversation.value
-  if (conv.title === '新对话' || conv.title === '') {
+  if (conv.title === 'New Conversation' || conv.title === '') {
     conv.title = content.slice(0, 30) + (content.length > 30 ? '...' : '')
   }
 
@@ -480,12 +480,12 @@ const sendMessage = async () => {
   } catch (err) {
     if (err.name === 'AbortError') {
       if (conv.messages.length > 0 && conv.messages[conv.messages.length - 1].role === 'assistant') {
-        conv.messages[conv.messages.length - 1].content += '\n\n[生成已停止]'
+        conv.messages[conv.messages.length - 1].content += '\n\n[Generation stopped]'
       }
     } else {
       conv.messages.push({
         role: 'assistant',
-        content: `错误: ${err.message || '请求失败'}`
+        content: `Error: ${err.message || 'Request failed'}`
       })
     }
     conv.updatedAt = new Date().toISOString()
