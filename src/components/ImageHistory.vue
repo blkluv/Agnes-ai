@@ -2,7 +2,7 @@
   <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/60">
       <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
-        历史记录
+        History
         <span class="text-xs font-normal text-gray-400 dark:text-gray-500 ml-1">({{ images.length }})</span>
       </h3>
       <div class="flex items-center space-x-2">
@@ -11,14 +11,14 @@
           @click="showModal = true"
           class="text-xs text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors"
         >
-          查看全部
+          View All
         </button>
         <button
           v-if="images.length > 0"
           @click="clearAll"
           class="text-xs text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
         >
-          清空
+          Clear All
         </button>
       </div>
     </div>
@@ -28,7 +28,7 @@
         <svg class="w-10 h-10 mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
-        <p class="text-sm">暂无图片</p>
+        <p class="text-sm">No images yet</p>
       </div>
       <div
         v-for="(img, idx) in displayedImages"
@@ -43,13 +43,13 @@
           <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ formatDate(img.createdAt) }}</p>
         </div>
         <div class="flex-shrink-0 flex flex-col space-y-1">
-          <button @click="$emit('edit-image', img)" class="p-1.5 bg-indigo-200 dark:bg-indigo-800 hover:bg-indigo-300 dark:hover:bg-indigo-700 rounded text-indigo-700 dark:text-indigo-300 transition-colors" title="以该图为源图编辑生成">
+          <button @click="$emit('edit-image', img)" class="p-1.5 bg-indigo-200 dark:bg-indigo-800 hover:bg-indigo-300 dark:hover:bg-indigo-700 rounded text-indigo-700 dark:text-indigo-300 transition-colors" title="Edit using this image as source">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
           </button>
-          <a :href="img.url" target="_blank" rel="noopener noreferrer" class="p-1.5 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded text-gray-700 dark:text-gray-200 transition-colors" title="在新页签中打开">
+          <a :href="img.url" target="_blank" rel="noopener noreferrer" class="p-1.5 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded text-gray-700 dark:text-gray-200 transition-colors" title="Open in new tab">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
           </a>
-          <button @click="deleteImage(idx)" class="p-1.5 bg-red-200 dark:bg-red-800 hover:bg-red-300 dark:hover:bg-red-700 rounded text-red-700 dark:text-red-300 transition-colors" title="删除">
+          <button @click="deleteImage(idx)" class="p-1.5 bg-red-200 dark:bg-red-800 hover:bg-red-300 dark:hover:bg-red-700 rounded text-red-700 dark:text-red-300 transition-colors" title="Delete">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
           </button>
         </div>
@@ -60,7 +60,7 @@
           @click="showModal = true"
           class="w-full py-2 text-sm text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
         >
-          查看更多 (共 {{ images.length }} 条)
+          View More ({{ images.length }})
         </button>
       </div>
     </div>
@@ -78,12 +78,12 @@
     </Teleport>
 
     <!-- All history modal -->
-    <Modal :visible="showModal" title="图片历史记录" @close="showModal = false">
+    <Modal :visible="showModal" title="Image History" @close="showModal = false">
       <div v-if="images.length === 0" class="flex flex-col items-center justify-center py-16 text-gray-400 dark:text-gray-500">
         <svg class="w-12 h-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
-        <p class="text-sm">暂无图片记录</p>
+        <p class="text-sm">No image records</p>
       </div>
       <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         <div
@@ -102,13 +102,13 @@
           </div>
           <!-- Actions -->
           <div class="absolute top-2 right-2 flex flex-col space-y-1">
-            <button @click.stop="$emit('edit-image', img); showModal = false" class="p-1.5 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 rounded-lg text-indigo-600 dark:text-indigo-400 shadow-sm transition-colors" title="以该图为源图编辑">
+            <button @click.stop="$emit('edit-image', img); showModal = false" class="p-1.5 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 rounded-lg text-indigo-600 dark:text-indigo-400 shadow-sm transition-colors" title="Edit using this image as source">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
             </button>
-            <a :href="img.url" target="_blank" rel="noopener noreferrer" class="p-1.5 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-300 shadow-sm transition-colors" title="在新页签中打开">
+            <a :href="img.url" target="_blank" rel="noopener noreferrer" class="p-1.5 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-300 shadow-sm transition-colors" title="Open in new tab">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
             </a>
-            <button @click.stop="deleteImage(idx)" class="p-1.5 bg-white/90 dark:bg-gray-800/90 hover:bg-red-500 dark:hover:bg-red-600 rounded-lg text-red-600 dark:text-red-400 shadow-sm transition-colors" title="删除">
+            <button @click.stop="deleteImage(idx)" class="p-1.5 bg-white/90 dark:bg-gray-800/90 hover:bg-red-500 dark:hover:bg-red-600 rounded-lg text-red-600 dark:text-red-400 shadow-sm transition-colors" title="Delete">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
             </button>
           </div>
@@ -119,16 +119,16 @@
     <!-- Confirm dialogs -->
     <ConfirmDialog
       :visible="confirmDelete.show"
-      title="确认删除"
-      message="确定要删除这张图片吗？此操作不可撤销。"
+      title="Confirm Delete"
+      message="Are you sure you want to delete this image? This action cannot be undone."
       @confirm="confirmDeleteImage"
       @cancel="cancelDeleteImage"
     />
     <ConfirmDialog
       :visible="confirmClearAll"
-      title="清空全部"
-      message="确定要清空所有图片记录吗？此操作不可撤销。"
-      confirm-text="清空全部"
+      title="Clear All"
+      message="Are you sure you want to clear all image records? This action cannot be undone."
+      confirm-text="Clear All"
       @confirm="confirmClearAllImages"
       @cancel="cancelClearAllImages"
     />
@@ -192,7 +192,7 @@ function cancelClearAllImages() {
 }
 
 function formatDate(ts) {
-  return new Date(ts).toLocaleString('zh-CN', {
+  return new Date(ts).toLocaleString('en-US', {
     month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
   })
 }
