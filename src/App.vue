@@ -17,7 +17,7 @@
             <button
               @click="toggleTheme"
               class="p-2 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              :title="isDark ? '切换到亮色模式' : '切换到暗色模式'"
+              :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
             >
               <!-- Sun icon -->
               <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +33,7 @@
             <button
               @click="showConfig = !showConfig"
               class="p-2 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              title="API 配置"
+              title="API Config"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -75,7 +75,7 @@
           <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
-          <p class="text-sm text-green-600 dark:text-green-400">配置已保存成功！</p>
+          <p class="text-sm text-green-600 dark:text-green-400">Configuration saved successfully!</p>
         </div>
       </Transition>
 
@@ -86,13 +86,13 @@
             <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
             </svg>
-            <p class="text-xs sm:text-sm text-amber-600 dark:text-amber-400">请先配置 API Key</p>
+            <p class="text-xs sm:text-sm text-amber-600 dark:text-amber-400">Please configure API Key first</p>
           </div>
           <button
             @click="showConfig = true"
             class="text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium"
           >
-            去配置
+            Go to config
           </button>
         </div>
       </div>
@@ -149,9 +149,9 @@ function VideoIcon() {
 }
 
 const tabs = [
-  { id: 'chat', label: '对话', icon: markRaw(ChatIcon) },
-  { id: 'image', label: '图片', icon: markRaw(ImageIcon) },
-  { id: 'video', label: '视频', icon: markRaw(VideoIcon) },
+  { id: 'chat', label: 'Chat', icon: markRaw(ChatIcon) },
+  { id: 'image', label: 'Image', icon: markRaw(ImageIcon) },
+  { id: 'video', label: 'Video', icon: markRaw(VideoIcon) },
 ]
 </script>
 
