@@ -7,12 +7,12 @@
           <svg class="w-4 h-4 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <span class="flex-1">AI 图片生成</span>
+          <span class="flex-1">AI Image Generation</span>
           <button
             v-if="images.length > 0"
             @click="showHistory = !showHistory"
             class="md:hidden p-1.5 rounded-lg text-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors"
-            title="历史记录"
+            title="History"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -23,7 +23,7 @@
         <div class="space-y-4">
           <!-- Mode selector -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">模式</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mode</label>
             <div class="flex space-x-2">
               <button
                 @click="mode = 'text-to-image'"
@@ -34,7 +34,7 @@
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                 ]"
               >
-                文生图
+                Text to Image
               </button>
               <button
                 @click="mode = 'image-to-image'"
@@ -45,7 +45,7 @@
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                 ]"
               >
-                图生图
+                Image to Image
               </button>
             </div>
           </div>
@@ -53,12 +53,12 @@
           <!-- Source image (img2img mode) -->
           <div v-if="mode === 'image-to-image'">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              源图片
+              Source Image
               <button
                 v-if="sourceImage"
                 @click="sourceImage = ''"
                 class="ml-2 text-xs text-red-500 hover:text-red-600"
-              >清除</button>
+              >Clear</button>
             </label>
             <div class="space-y-2">
               <!-- Image preview -->
@@ -76,8 +76,8 @@
                   <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <p class="text-sm">点击右侧历史记录中的编辑按钮</p>
-                  <p class="text-xs mt-1">或输入图片 URL</p>
+                  <p class="text-sm">Click the edit button in the history on the right</p>
+                  <p class="text-xs mt-1">or enter an image URL</p>
                 </div>
               </div>
               <!-- Current source URL display -->
@@ -92,7 +92,7 @@
                 <button
                   @click="copySourceUrl"
                   class="flex-shrink-0 p-1 rounded text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  title="复制链接"
+                  title="Copy link"
                 >
                   <svg v-if="!copied" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -107,7 +107,7 @@
                 <input
                   v-model="sourceImageInput"
                   @keydown.enter="applySourceImage"
-                  :placeholder="sourceImage ? '更换源图片 URL...' : '粘贴图片 URL...'"
+                  :placeholder="sourceImage ? 'Replace source image URL...' : 'Paste image URL...'"
                   class="flex-1 px-2 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all"
                 />
                 <button
@@ -115,7 +115,7 @@
                   :disabled="!sourceImageInput.trim()"
                   class="px-3 py-1.5 text-xs bg-indigo-500 hover:bg-indigo-600 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white rounded-lg transition-colors"
                 >
-                  确认
+                  Apply
                 </button>
               </div>
             </div>
@@ -123,10 +123,10 @@
 
           <!-- Prompt -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">图片描述 (Prompt)</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image Description (Prompt)</label>
             <textarea
               v-model="prompt"
-              placeholder="描述你想要生成的图片..."
+              placeholder="Describe the image you want to generate..."
               :disabled="loading"
               rows="2"
               class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50 resize-none text-sm"
@@ -136,40 +136,40 @@
           <!-- Parameters -->
           <div>
             <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-              尺寸
-              <ParamTip tip="图片输出的像素尺寸。支持多种常用尺寸：<br><b>方形</b>：1024×1024、512×512<br><b>横屏 16:9</b>：1920×1080、1280×720、1024×576<br><b>竖屏 9:16</b>：1080×1920、720×1280<br><b>横屏 4:3</b>：1600×1200、1024×768<br><b>超宽屏 21:9</b>：2560×1080<br>推荐：1024×1024（通用）、1920×1080（高清横屏）、1080×1920（竖屏）" title="尺寸说明" />
+              Size
+              <ParamTip tip="Image output pixel dimensions. Supports various common sizes:<br><b>Square</b>: 1024×1024, 512×512<br><b>Landscape 16:9</b>: 1920×1080, 1280×720, 1024×576<br><b>Portrait 9:16</b>: 1080×1920, 720×1280<br><b>Landscape 4:3</b>: 1600×1200, 1024×768<br><b>Ultrawide 21:9</b>: 2560×1080<br>Recommended: 1024×1024 (general), 1920×1080 (HD landscape), 1080×1920 (portrait)" title="Size Info" />
             </label>
             <select
               v-model="size"
               :disabled="loading"
               class="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
             >
-              <!-- 方形 -->
-              <option value="1024x1024">1024 × 1024 (1:1 方形)</option>
-              <option value="512x512">512 × 512 (1:1 小图)</option>
-              <!-- 横屏 16:9 -->
-              <option value="1920x1080">1920 × 1080 (16:9 全高清)</option>
+              <!-- Square -->
+              <option value="1024x1024">1024 × 1024 (1:1 Square)</option>
+              <option value="512x512">512 × 512 (1:1 Small)</option>
+              <!-- Landscape 16:9 -->
+              <option value="1920x1080">1920 × 1080 (16:9 Full HD)</option>
               <option value="1280x720">1280 × 720 (16:9 HD)</option>
               <option value="1024x576">1024 × 576 (16:9)</option>
-              <!-- 竖屏 9:16 -->
-              <option value="1080x1920">1080 × 1920 (9:16 竖屏)</option>
-              <option value="720x1280">720 × 1280 (9:16 竖屏)</option>
-              <!-- 横屏 4:3 -->
-              <option value="1600x1200">1600 × 1200 (4:3 横屏)</option>
-              <option value="1024x768">1024 × 768 (4:3 横屏)</option>
-              <!-- 超宽屏 21:9 -->
-              <option value="2560x1080">2560 × 1080 (21:9 超宽)</option>
+              <!-- Portrait 9:16 -->
+              <option value="1080x1920">1080 × 1920 (9:16 Portrait)</option>
+              <option value="720x1280">720 × 1280 (9:16 Portrait)</option>
+              <!-- Landscape 4:3 -->
+              <option value="1600x1200">1600 × 1200 (4:3 Landscape)</option>
+              <option value="1024x768">1024 × 768 (4:3 Landscape)</option>
+              <!-- Ultrawide 21:9 -->
+              <option value="2560x1080">2560 × 1080 (21:9 Ultrawide)</option>
             </select>
           </div>
           <!-- Negative prompt -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              负面提示词 (Negative Prompt)
-              <ParamTip tip="描述你不希望出现在图片中的内容，例如：blurry, low quality, distorted, watermark, extra fingers 等。使用英文效果更佳。留空则不启用。" title="负面提示词说明" />
+              Negative Prompt
+              <ParamTip tip="Describe content you don't want in the image, e.g.: blurry, low quality, distorted, watermark, extra fingers, etc. Using English works better. Leave empty to disable." title="Negative Prompt Info" />
             </label>
             <input
               v-model="negativePrompt"
-              placeholder="不想出现在图片中的内容..."
+              placeholder="Content you don't want in the image..."
               :disabled="loading"
               class="w-full px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all disabled:opacity-50"
             />
@@ -182,13 +182,13 @@
             :disabled="(!prompt.trim() && mode !== 'image-to-image') || !isConfigured || (mode === 'image-to-image' && !sourceImage)"
             class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white font-medium rounded-lg transition-colors duration-200 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 text-sm"
           >
-            <span>生成图片</span>
+            <span>Generate Image</span>
           </button>
           <!-- Loading state: spinner + stop button together -->
           <div v-if="loading" class="flex items-center justify-between px-4 py-3 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg">
             <div class="flex items-center space-x-3">
               <LoadingSpinner />
-              <span class="text-sm text-indigo-600 dark:text-indigo-400">正在生成图片...</span>
+              <span class="text-sm text-indigo-600 dark:text-indigo-400">Generating image...</span>
             </div>
             <button
               @click="stopGeneration"
@@ -197,11 +197,11 @@
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
-              <span>停止</span>
+              <span>Stop</span>
             </button>
           </div>
           <p v-if="!isConfigured" class="text-xs text-amber-500 dark:text-amber-400">
-            请先在 API 配置中设置 API Key
+            Please set your API Key in the API configuration
           </p>
         </div>
       </div>
@@ -209,7 +209,7 @@
       <!-- Current result -->
       <div v-if="currentImage" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-5">
         <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center justify-between">
-          <span>生成结果</span>
+          <span>Generated Result</span>
           <a
             :href="currentImage"
             download="agnes-generated-image.png"
@@ -218,7 +218,7 @@
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
             </svg>
-            <span>下载</span>
+            <span>Download</span>
           </a>
         </h4>
         <div class="relative rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
@@ -233,7 +233,7 @@
     </div>
 
     <!-- Mobile: History panel -->
-    <Modal :visible="showHistory" title="历史记录" @close="showHistory = false">
+    <Modal :visible="showHistory" title="History" @close="showHistory = false">
       <ImageHistory
         :images="images"
         @edit-image="handleEditImage"
@@ -334,15 +334,15 @@ function copySourceUrl() {
     copied.value = true
     setTimeout(() => { copied.value = false }, 1500)
   }).catch(() => {
-    alert('复制失败')
+    alert('Copy failed')
   })
 }
 
 async function handleEditImage(img) {
   mode.value = 'image-to-image'
   sourceImage.value = img.url
-  // API 生成的图片 URL 是临时的，过一段时间会过期。
-  // 尝试转成 base64 Data URI（永久有效），供图生图接口使用。
+  // The image URL from the API is temporary and expires after a while.
+  // Try to convert to base64 Data URI (permanent) for image-to-image use.
   fetchImageAsDataURL(img.url).then(dataUrl => {
     if (dataUrl) sourceImage.value = dataUrl
   })
@@ -445,7 +445,7 @@ async function generateImage() {
       })
       saveImages()
     } else {
-      throw new Error('API 返回中未找到图片 URL')
+      throw new Error('Image URL not found in API response')
     }
   } catch (err) {
     if (err.name === 'AbortError') {
